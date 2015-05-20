@@ -22,7 +22,7 @@
   
   <style>
     body {
-      padding-top: 50px;
+      padding-top: 40px;
     }
     .starter-template {
       padding: 40px 15px;
@@ -30,6 +30,7 @@
     }
     .myimg {
      padding-top: 20px; 
+     padding-bottom: 10px; 
     }    
   </style>
 
@@ -45,6 +46,7 @@
           success(function(data, status, headers, config) {
             console.log("data");
             $scope.imgUrl = data;
+            $scope.time = new Date().toLocaleString();
             $('#processButton').removeAttr("disabled");
             $('#spinnerIcon').hide();
           }).
@@ -84,13 +86,13 @@
       <div class="starter-template">
         
         <p class="lead">Clicking the button below to request a live photo in Yu's Office.</p>
-        <div>        
+        <div>
           <button id="processButton" class="btn btn-default" ng-click="getPhoto()">
             See Yu's Office Now
           </button>
-          <i id="spinnerIcon" class="fa fa-spinner fa-spin"></i>
-
+          <i id="spinnerIcon" class="fa fa-spinner fa-spin"></i>          
           <img class="img-responsive img-rounded myimg" ng-src={{imgUrl}}></img>
+          <p>{{time}}</p>
         </div>
 
       </div>
