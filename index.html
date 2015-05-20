@@ -9,7 +9,9 @@
   
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <!-- Optional theme -->
@@ -28,7 +30,7 @@
     }
     .myimg {
      padding-top: 20px; 
-    }
+    }    
   </style>
 
   <script type="text/javascript">    
@@ -36,23 +38,27 @@
     app.controller('myCtrl', function($scope, $http) {
         
       $scope.getPhoto = function() {
+        $('#processButton').attr("disabled","disabled");
+        $('#spinnerIcon').show();
+
         $http.get('http://emolance.ngrok.io/process/testuser').
           success(function(data, status, headers, config) {
             console.log("data");
             $scope.imgUrl = data;
+            $('#processButton').removeAttr("disabled");
+            $('#spinnerIcon').hide();
           }).
           error(function(data, status, headers, config) {
             console.log("Failed to get the process done.");
+            $('#processButton').removeAttr("disabled");            
+            $('#spinnerIcon').hide();
           });
       }
 
-    });
+      $('#spinnerIcon').hide();
 
-    $(function(){
-        $('a, button').click(function() {
-            $(this).toggleClass('active');
-        });
     });
+    
   </script>
 
 </head>
@@ -79,10 +85,10 @@
         
         <p class="lead">Clicking the button below to request a live photo in Yu's Office.</p>
         <div>        
-          <button class="has-spinner btn btn-default" ng-click="getPhoto()">
-            <span class="spinner"><i class="icon-spin icon-refresh"></i></span>
+          <button id="processButton" class="btn btn-default" ng-click="getPhoto()">
             See Yu's Office Now
           </button>
+          <i id="spinnerIcon" class="fa fa-spinner fa-spin"></i>
 
           <img class="img-responsive img-rounded myimg" ng-src={{imgUrl}}></img>
         </div>
