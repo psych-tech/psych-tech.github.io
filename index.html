@@ -1,0 +1,97 @@
+<!doctype html>
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Emolance Test</title>
+  
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>  
+  
+  <style>
+    body {
+      padding-top: 50px;
+    }
+    .starter-template {
+      padding: 40px 15px;
+      text-align: center;
+    }
+    .myimg {
+     padding-top: 20px; 
+    }
+  </style>
+
+  <script type="text/javascript">    
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $http) {
+        
+      $scope.getPhoto = function() {
+        $http.get('http://emolance.ngrok.io/process/testuser').
+          success(function(data, status, headers, config) {
+            console.log("data");
+            $scope.imgUrl = data;
+          }).
+          error(function(data, status, headers, config) {
+            console.log("Failed to get the process done.");
+          });
+      }
+
+    });
+
+    $(function(){
+        $('a, button').click(function() {
+            $(this).toggleClass('active');
+        });
+    });
+  </script>
+
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+  
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Emolance Test</a>
+        </div>        
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="starter-template">
+        
+        <p class="lead">Clicking the button below to request a live photo in Yu's Office.</p>
+        <div>        
+          <button class="has-spinner btn btn-default" ng-click="getPhoto()">
+            <span class="spinner"><i class="icon-spin icon-refresh"></i></span>
+            See Yu's Office Now
+          </button>
+
+          <img class="img-responsive img-rounded myimg" ng-src={{imgUrl}}></img>
+        </div>
+
+      </div>
+
+    </div>
+
+
+</body>
+
+</html>
