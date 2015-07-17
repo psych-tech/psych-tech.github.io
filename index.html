@@ -29,6 +29,9 @@
       text-align: center;
     }
     .myimg {
+     margin-left: auto;
+     margin-right: auto;
+     width: 50%;
      padding-top: 20px; 
      padding-bottom: 10px; 
     }    
@@ -37,18 +40,21 @@
   <script type="text/javascript">    
     var app = angular.module('myApp', []);
     app.controller('myCtrl', function($scope, $http) {
-        
+      
+      $scope.images = [];
+
       $scope.getPhoto = function() {
         $('#processButton').attr("disabled","disabled");
         $('#spinnerIcon').show();
 
-        $http.get('http://emolance.ngrok.io/process/testuser').
+        $http.get('http://000000008868bad7.emolance.ngrok.io/process/testuser').
           success(function(data, status, headers, config) {
-            console.log("data");
-            $scope.imgUrl = data;
-            $scope.time = new Date().toLocaleString();
+
+            data.time = new Date().toLocaleString();
             $('#processButton').removeAttr("disabled");
             $('#spinnerIcon').hide();
+
+            $scope.images.push(data);
           }).
           error(function(data, status, headers, config) {
             console.log("Failed to get the process done.");
@@ -61,6 +67,19 @@
 
     });
     
+  </script>
+
+  <script type="text/javascript">
+  ;(function(p,l,o,w,i,n,g){if(!p[i]){p.GlobalSnowplowNamespace=p.GlobalSnowplowNamespace||[];
+  p.GlobalSnowplowNamespace.push(i);p[i]=function(){(p[i].q=p[i].q||[]).push(arguments)
+  };p[i].q=p[i].q||[];n=l.createElement(o);g=l.getElementsByTagName(o)[0];n.async=1;
+  n.src=w;g.parentNode.insertBefore(n,g)}}(window,document,"script","//d1fc8wv8zag5ca.cloudfront.net/2.5.0/sp.js","snowplow"));
+
+  window.snowplow('newTracker', 'cf', 'd9hgnchkw8kxh.cloudfront.net/', { // Initialise a tracker
+    appId: '12'
+  });
+
+  window.snowplow('trackPageView');
   </script>
 
 </head>
@@ -85,14 +104,17 @@
 
       <div class="starter-template">
         
-        <p class="lead">Clicking the button below to request a live photo in Yu's Office.</p>
+        <p class="lead">Click on the button to request a live photo of Yu's Office.</p>
         <div>
           <button id="processButton" class="btn btn-default" ng-click="getPhoto()">
             See Yu's Office Now
           </button>
           <i id="spinnerIcon" class="fa fa-spinner fa-spin"></i>          
-          <img class="img-responsive img-rounded myimg" ng-src={{imgUrl}}></img>
-          <p>{{time}}</p>
+
+          <div ng-repeat="data in images">          
+            <img class="img-responsive img-rounded myimg" ng-src={{data.url}}></img>
+            <p>{{data.time}}</p>
+          </div>
         </div>
 
       </div>
